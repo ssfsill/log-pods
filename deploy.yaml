@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: foobar
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo
+  namespace: foobar
+  labels:
+    app: foo
+spec:
+  selector:
+    matchLabels:
+      app: foo
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: foo
+    spec:
+      containers:
+        - name: foo
+          image: busybox:1.28
+          resources:
+            limits:
+              memory: "6Mi"
+              cpu: "5m"
+          command:
+            - "/bin/sh"
+            - "-c"
+          args:
+            - >
+              while true; do echo "sono foo, che ora è? $(date +%H:%M:%S) del $(date +%D), ecco a te un numero random: $RANDOM"; sleep 10; done
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bar
+  namespace: foobar
+  labels:
+    app: bar
+spec:
+  selector:
+    matchLabels:
+      app: bar
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: bar
+    spec:
+      containers:
+        - name: bar
+          image: busybox:1.28
+          resources:
+            limits:
+              memory: "6Mi"
+              cpu: "5m"
+          command:
+            - "/bin/sh"
+            - "-c"
+          args:
+            - >
+              while true; do echo "sono bar, che ora è? $(date +%H:%M:%S) del $(date +%D), ecco a te un numero random: $RANDOM"; sleep 11; done
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baz
+  namespace: foobar
+  labels:
+    app: baz
+spec:
+  selector:
+    matchLabels:
+      app: baz
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: baz
+    spec:
+      containers:
+        - name: baz
+          image: busybox:1.28
+          resources:
+            limits:
+              memory: "6Mi"
+              cpu: "5m"
+          command:
+            - "/bin/sh"
+            - "-c"
+          args:
+            - >
+              while true; do echo "sono baz, che ora è? $(date +%H:%M:%S) del $(date +%D), ecco a te un numero random: $RANDOM"; sleep 12; done
